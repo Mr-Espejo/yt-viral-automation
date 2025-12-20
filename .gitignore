@@ -1,0 +1,23 @@
+# Entornos
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Logs
+logs/
+*.log
+
+# Data & Videos (NO subir binarios)
+storage/videos/
+storage/metadata/
+storage/analysis/
+storage/logs/
+
+# Config sensible
+*.env
+config.yaml
+
+# Sistema
+.DS_Store
+Thumbs.db
