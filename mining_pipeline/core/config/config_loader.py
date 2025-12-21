@@ -59,6 +59,9 @@ class ConfigLoader:
         # New Phase 6 storage structure
         storage_meta = self._validate_storage_config(config_data)
         
+        # New Phase 7 edit parameters
+        edit_params = self._validate_edit_config(config_data)
+        
         # Create and return AppConfig
         return AppConfig(
             api_key=api_key,
@@ -68,7 +71,8 @@ class ConfigLoader:
             max_videos=max_videos,
             storage_mode=storage_meta["mode"],
             storage_root=storage_meta["root"],
-            keep_local_copy=storage_meta["keep_local_copy"]
+            keep_local_copy=storage_meta["keep_local_copy"],
+            edit_params=edit_params
         )
     
     def _load_yaml(self) -> Dict[str, Any]:
@@ -224,4 +228,36 @@ class ConfigLoader:
             "mode": mode.strip(),
             "root": root.strip(),
             "keep_local_copy": keep_local_copy
+        }
+
+    def _validate_edit_config(self, config: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate edit section for Phase 7."""
+        defaults = {
+            "keyframe_interval": 5,
+            "intro_duration": 5,
+            "outro_duration": 5
+        }
+        
+        if "edit" not in config:
+            return defaults
+            
+        edit = config["edit"]
+        if not isinstance(edit, dict):
+            return defaults
+            
+        keyframe_interval = edit.get("keyframe_interval", defaults["keyframe_interval"])
+        intro_duration = edit.get("intro_duration", defaults["intro_duration"])
+        outro_duration = edit.get("outro_duration", defaults["outro_duration"])
+        
+        if not isinstance(keyframe_interval, (int, float)) or keyframe_interval <= 0:
+            raise ConfigValidationError("edit.keyframe_interval must be a positive number")
+        if not isinstance(intro_duration, (int, float)) or intro_duration < 0:
+            raise ConfigValidationError("edit.intro_duration must be a non-negative number")
+        if not isinstance(outro_duration, (int, float)) or outro_duration < 0:
+            raise ConfigValidationError("edit.outro_duration must be a non-negative number")
+            
+        return {
+            "keyframe_interval": float(keyframe_interval),
+            "intro_duration": float(intro_duration),
+            "outro_duration": float(outro_duration)
         }

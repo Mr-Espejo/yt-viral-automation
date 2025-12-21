@@ -1,100 +1,93 @@
-# YouTube Viral Automation
+# 📺 YouTube Viral Automation
 
-A Python-based automation system for analyzing and processing YouTube content to identify viral patterns and trends.
+Una plataforma escalable diseñada para la minería de datos, análisis de viralidad y procesamiento de contenido de YouTube utilizando una arquitectura modular basada en **Pipelines**.
 
-## Project Status
+---
 
-**Current Phase:** Phase 0 - Project Setup & Foundation
+## 🏗️ Arquitectura del Sistema
 
-## Description
+El proyecto está dividido en pipelines independientes que se comunican a través de un sistema de almacenamiento centralizado (**Storage**).
 
-This project provides a foundation for automating YouTube data collection, video processing, and viral content analysis. Phase 0 establishes the core project structure, logging infrastructure, and dependency management required for future development phases.
+### 1. 🔍 Mining Pipeline (`mining_pipeline/`)
+Encargado de la interacción con YouTube.
+- **Fase 1-2**: Configuración y resolución de canales (@handle, ID, URL).
+- **Fase 3**: Minería de metadatos (vistas, likes, comentarios).
+- **Fase 4**: Análisis de viralidad y detección de "Outliers".
+- **Fase 5**: Descarga automatizada de videos virales (MP4).
 
-## What Phase 0 Does
+### 2. 🎞️ Edit Pipeline (`edit_pipeline/`)
+Encargado del procesamiento técnico de medios.
+- **Fase 7**: Normalización de video (H.264/AAC, 1080p, 30fps).
+- **Extracción de Assets**: Separación de audio (WAV) y generación de keyframes (JPG).
+- **Metadatos Técnicos**: Generación de reportes JSON con duración, bitrate y segmentación.
 
-Phase 0 sets up:
-- Clean project directory structure
-- Python logging configuration (outputs to `logs/app.log`)
-- Base dependency management via `requirements.txt`
-- Executable entry point (`main.py`)
-- Professional project documentation
+### 3. 📦 Shared & Storage
+- **`shared/`**: Lógica común como el `StorageManager` para persistencia.
+- **`storage/`**: El "Data Lake" donde se centralizan metadatos y videos.
 
-**Note:** No business logic, API calls, or data processing is implemented in Phase 0. This is intentional - the focus is on creating a solid, extensible foundation.
+---
 
-## Requirements
+## 🚀 Instalación y Requisitos
 
-- **Python Version:** 3.11 or higher
-- **Operating Systems:** macOS, Linux, Windows
+### Requisitos del Sistema
+1. **Python 3.10+**
+2. **FFmpeg**: Necesario para el procesamiento de video.
+   - **Windows**: Descargar desde [gyan.dev](https://www.gyan.dev/ffmpeg/builds/) y añadir al PATH.
+   - **Linux**: `sudo apt install ffmpeg`
 
-## Installation
-
-1. Clone or download this project
-2. Navigate to the project directory:
-   ```bash
-   cd yt_viral_automation
-   ```
-
-3. (Optional) Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-4. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-## How to Run
-
-Execute the main script:
-
+### Configuración de Python
 ```bash
+# Instalar dependencias
+pip install -r requirements.txt
+```
+
+---
+
+## ⚙️ Configuración
+
+Edita el archivo `mining_pipeline/config.yaml`:
+```yaml
+api_key: "TU_API_KEY_AQUI"
+channel: "@nombre_canal"
+min_views: 1000000
+min_engagement: 0.05
+storage:
+  root: "./storage" # Carpeta raíz para todos los datos
+```
+
+---
+
+## 🛠️ Cómo Ejecutar
+
+### Paso 1: Minería y Descarga
+Ejecuta el pipeline de extracción de datos de YouTube.
+```bash
+cd mining_pipeline
 python main.py
 ```
 
-**Expected Output:**
-```
-==================================================
-✅ Phase 0 complete — Project setup initialized.
-==================================================
-```
-
-Logs will be written to `logs/app.log` with timestamps and log levels.
-
-## Project Structure
-
-```
-yt_viral_automation/
-│
-├── core/              # Core modules (future business logic)
-│   └── __init__.py
-│
-├── data/              # Data storage directory
-│
-├── videos/            # Video downloads directory
-│
-├── logs/              # Application logs
-│   └── app.log
-│
-├── main.py            # Main entry point
-├── requirements.txt   # Python dependencies
-└── README.md          # This file
+### Paso 2: Procesamiento y Normalización
+Prepara los videos descargados para edición o análisis.
+```bash
+cd edit_pipeline
+python main.py
 ```
 
-## Next Steps
+---
 
-Future phases will add:
-- YouTube API integration
-- Video downloading capabilities
-- Data analysis and viral pattern detection
-- Configuration management
-- CLI interface
+## 📂 Organización de Datos (Storage)
 
-## License
+Todos los resultados se organizan en la raíz del proyecto:
+- `storage/metadata/`: CSVs de minería y JSONs técnicos.
+- `storage/videos/viral/`: Videos originales descargados.
+- `storage/videos/normalized/`: Videos estandarizados en 1080p.
+- `storage/videos/audio/`: Pistas WAV extraídas.
+- `storage/videos/frames/`: Secuencias de imágenes de los videos.
 
-TBD
+---
 
-## Author
-
-TBD
+## ⚖️ Principios de Ingeniería
+- **SOLID**: Cada clase tiene una única responsabilidad.
+- **Arquitectura Limpia**: Los pipelines están desacoplados.
+- **Idempotencia**: El sistema detecta archivos ya procesados para evitar trabajo redundante.
+- **Determinismo**: La normalización asegura que todos los assets tengan las mismas propiedades técnicas.

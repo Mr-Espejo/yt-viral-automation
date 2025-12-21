@@ -3,7 +3,7 @@ Application Configuration Model
 Represents a validated configuration state
 """
 
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 class AppConfig:
@@ -23,7 +23,8 @@ class AppConfig:
         max_videos: Optional[int] = None,
         storage_mode: str = "local",
         storage_root: str = "./storage",
-        keep_local_copy: bool = True
+        keep_local_copy: bool = True,
+        edit_params: Optional[Dict[str, Any]] = None
     ):
         """
         Initialize AppConfig with validated values.
@@ -37,6 +38,7 @@ class AppConfig:
             storage_mode: Storage backend type (default: "local")
             storage_root: Root directory for storage (default: "./storage")
             keep_local_copy: Whether to keep local files after moving to storage (default: True)
+            edit_params: Parameters for video processing (keyframe_interval, intro_duration, etc.)
         """
         self._api_key = api_key
         self._channel = channel
@@ -46,6 +48,11 @@ class AppConfig:
         self._storage_mode = storage_mode
         self._storage_root = storage_root
         self._keep_local_copy = keep_local_copy
+        self._edit_params = edit_params or {
+            "keyframe_interval": 5,
+            "intro_duration": 5,
+            "outro_duration": 5
+        }
     
     @property
     def api_key(self) -> str:
@@ -86,6 +93,11 @@ class AppConfig:
     def keep_local_copy(self) -> bool:
         """Whether to keep local copies of files."""
         return self._keep_local_copy
+
+    @property
+    def edit_params(self) -> Dict[str, Any]:
+        """Video processing parameters."""
+        return self._edit_params
     
     def __repr__(self) -> str:
         """String representation for debugging."""

@@ -1,5 +1,9 @@
-google-api-python-client
-yt-dlp
-pandas
-tqdm
-pyyaml
+# Core Dependencies
+google-api-python-client>=2.0.0
+yt-dlp>=2023.0.0
+pandas>=2.0.0
+pyyaml>=6.0.0
+tqdm>=4.65.0
+
+# Media Processing (FFmpeg must be installed at system level)
+# No extra python packages needed for FFmpeg as it's called via subprocess.
