@@ -1,12 +1,12 @@
 """
 Video Downloader Service
-Phase 5: Viral Video Downloading
+Phase 5: Viral Video Downloading (Hotfix: Forced MP4 Merging)
 """
 
 import logging
 import pandas as pd
-import subprocess
 import re
+import yt_dlp
 from pathlib import Path
 from typing import List
 
@@ -17,23 +17,18 @@ logger = logging.getLogger(__name__)
 
 class VideoDownloader:
     """
-    Service responsible for downloading viral videos using yt-dlp.
+    Service responsible for downloading viral videos using yt-dlp Python API.
     
     Responsibilities:
     - Load viral video metadata from Phase 4.
     - Sanitize filenames for local storage.
-    - Execute yt-dlp via subprocess for high-quality MP4 downloads.
+    - Execute yt-dlp with forced MP4 merging (bv*+ba/b).
     - Manage sequential downloads and error handling.
     """
 
     def __init__(self, config: AppConfig, metadata_dir: Path, videos_dir: Path):
         """
         Initialize VideoDownloader with application configuration.
-        
-        Args:
-            config: Application configuration.
-            metadata_dir: Path to storage metadata.
-            videos_dir: Path to storage videos.
         """
         self._config = config
         self._viral_file = metadata_dir / "viral_videos.csv"
@@ -43,9 +38,6 @@ class VideoDownloader:
     def download_viral_videos(self) -> int:
         """
         Main execution flow for downloading selected videos.
-        
-        Returns:
-            int: Total number of successfully downloaded videos.
         """
         logger.info("Starting Phase 5: Viral Video Downloading")
         
@@ -53,7 +45,6 @@ class VideoDownloader:
             logger.error(f"Viral videos metadata not found at {self._viral_file}")
             return 0
 
-        # 1. Load data
         df = pd.read_csv(self._viral_file)
         if df.empty:
             logger.warning("No viral videos found in metadata to download.")
@@ -64,7 +55,6 @@ class VideoDownloader:
 
         success_count = 0
 
-        # 2. Iterate and download
         for idx, row in df.iterrows():
             video_id = row['video_id']
             views = int(row['views'])
@@ -82,60 +72,49 @@ class VideoDownloader:
 
     def _download_single_video(self, video_id: str, views: int, title: str) -> bool:
         """
-        Downloads a single video using yt-dlp.
-        
-        Naming format: <views>_<video_id>_<sanitized_title>.mp4
+        Downloads a single video using yt-dlp Python API with forced merging.
         """
         sanitized_title = self._sanitize_filename(title)
-        filename = f"{views}_{video_id}_{sanitized_title}.mp4"
-        output_path = self._output_dir / filename
+        # Naming: <views>_<video_id>_<sanitized_title> (extension added by yt-dlp)
+        base_filename = f"{views}_{video_id}_{sanitized_title}"
+        final_path = self._output_dir / f"{base_filename}.mp4"
         
-        # Skip if already exists
-        if output_path.exists():
-            logger.info(f"Video already exists, skipping: {filename}")
+        if final_path.exists():
+            logger.info(f"Video already exists, skipping: {final_path.name}")
             return True
 
         url = f"https://www.youtube.com/watch?v={video_id}"
         
-        # yt-dlp command configuration
-        # bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4 ensures MP4 container compatible with most tools
-        command = [
-            "yt-dlp",
-            "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4",
-            "--merge-output-format", "mp4",
-            "-o", str(output_path),
-            "--no-playlist",
-            url
-        ]
+        # yt-dlp options for forced MP4 merging
+        ydl_opts = {
+            'format': 'bv*+ba/b',
+            'merge_output_format': 'mp4',
+            'outtmpl': str(self._output_dir / f"{base_filename}.%(ext)s"),
+            'quiet': True,
+            'no_warnings': True,
+            'noplaylist': True,
+        }
 
         try:
-            logger.info(f"Executing yt-dlp for {video_id}...")
-            # subprocess.run waits for completion (sequential execution)
-            result = subprocess.run(
-                command, 
-                capture_output=True, 
-                text=True, 
-                check=True
-            )
-            logger.info(f"Download successful: {filename}")
-            return True
-        except subprocess.CalledProcessError as e:
-            logger.error(f"yt-dlp error for {video_id}: {e.stderr}")
-            return False
-        except FileNotFoundError:
-            logger.error("yt-dlp not found. Please ensure it is installed and in your PATH.")
-            return False
+            logger.info(f"Downloading and merging {video_id} into single MP4...")
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([url])
+            
+            if final_path.exists():
+                logger.info(f"Download and merge successful: {final_path.name}")
+                return True
+            else:
+                logger.error(f"Merge error: Expected file {final_path.name} not found.")
+                return False
+
         except Exception as e:
-            logger.error(f"Unexpected error downloading {video_id}: {e}")
+            logger.error(f"yt-dlp error for {video_id}: {e}")
             return False
 
     def _sanitize_filename(self, filename: str) -> str:
         """
         Removes special characters and keeps filename safe for Windows/Unix.
         """
-        # Remove anything that isn't alphanumeric, space, or hyphen
         s = re.sub(r'[^\w\s-]', '', filename).strip()
-        # Replace spaces/hyphens with underscores
         s = re.sub(r'[-\s]+', '_', s)
-        # Limit length to avoid Windows path issues (max 255 total, leaving room for path)
         return s[:150]
