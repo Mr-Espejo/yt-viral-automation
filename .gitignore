@@ -17,6 +17,7 @@ storage/logs/
 # Config sensible
 *.env
 config.yaml
+client_secrets.json
 
 # Sistema
 .DS_Store
