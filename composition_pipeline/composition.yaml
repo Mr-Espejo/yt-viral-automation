@@ -1,0 +1,33 @@
+layout:
+  type: vertical_split
+  regions:
+    - id: top
+      x: 0
+      y: 0
+      width: 1080
+      height: 960
+    - id: bottom
+      x: 0
+      y: 960
+      width: 1080
+      height: 960
+
+sources:
+  top:
+    video: storage/videos/viral/101260613_t2GNyN6L6Z4_She_Tamed_The_Unicorn_Demon_Shazam_Fury_of_the_Gods_Kamin_Emin_Jony_slowed_edit_shorts.mp4
+    audio: true
+    reframe:
+      type: crop_fill
+  bottom:
+    video: storage/videos/viral/104723323_ilqFujuHM3A_DESERVES_RESPECT_Power_Ranger_Megaforce_Fragment_slxughter_slowed_edit_shorts.mp4
+    audio: false
+    reframe:
+      type: crop_fill
+
+duration:
+  mode: min
+
+canvas:
+  width: 1080
+  height: 1920
+  fps: 30
