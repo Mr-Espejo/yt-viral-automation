@@ -1,0 +1,17 @@
+video_id,variant,score,group,test_id,timestamp,status
+6iL2GTCl5Rg,hook_short,79.5,experiment_group,test_6iL2GTCl5Rg_hook,2025-12-23T20:07:24.068289,published
+ilqFujuHM3A,hook_short,79.5,experiment_group,test_ilqFujuHM3A_hook,2025-12-23T20:07:24.070277,published
+bumNXv4pOro,hook_short,79.5,experiment_group,test_bumNXv4pOro_hook,2025-12-23T20:07:24.072020,published
+IuB9BbdRJpI,hook_short,79.5,experiment_group,test_IuB9BbdRJpI_hook,2025-12-23T20:07:24.073491,published
+rvreWnPD2SM,hook_short,79.5,experiment_group,test_rvreWnPD2SM_hook,2025-12-23T20:07:24.075468,published
+6iL2GTCl5Rg,hook_short,79.5,experiment_group,test_6iL2GTCl5Rg_hook,2025-12-23T20:11:57.874883,published
+ilqFujuHM3A,hook_short,79.5,experiment_group,test_ilqFujuHM3A_hook,2025-12-23T20:11:57.888263,published
+bumNXv4pOro,hook_short,79.5,experiment_group,test_bumNXv4pOro_hook,2025-12-23T20:11:57.890391,published
+IuB9BbdRJpI,hook_short,79.5,experiment_group,test_IuB9BbdRJpI_hook,2025-12-23T20:11:57.893270,published
+rvreWnPD2SM,hook_short,79.5,experiment_group,test_rvreWnPD2SM_hook,2025-12-23T20:11:57.895774,published
+6iL2GTCl5Rg,hook_short,79.5,experiment_group,test_6iL2GTCl5Rg_hook,2025-12-23T20:19:27.173176,published
+ilqFujuHM3A,hook_short,79.5,experiment_group,test_ilqFujuHM3A_hook,2025-12-23T20:19:27.183274,published
+bumNXv4pOro,hook_short,79.5,experiment_group,test_bumNXv4pOro_hook,2025-12-23T20:19:27.186005,published
+IuB9BbdRJpI,hook_short,79.5,experiment_group,test_IuB9BbdRJpI_hook,2025-12-23T20:19:27.188264,published
+rvreWnPD2SM,hook_short,79.5,experiment_group,test_rvreWnPD2SM_hook,2025-12-23T20:19:27.191585,published
+6iL2GTCl5Rg,full_optimized,64.5,control_group,,2025-12-23T21:52:50.615230,published

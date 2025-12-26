@@ -1,0 +1,17 @@
+# edit_pipeline/configs/assembly_rules.yaml
+# Defines how segments from segments.json are combined
+
+rules:
+  clip_intro_only:
+    segments:
+      - "intro"
+    
+  body_only:
+    segments:
+      - "body"
+
+  full_assembly:
+    segments:
+      - "intro"
+      - "body"
+      - "outro"

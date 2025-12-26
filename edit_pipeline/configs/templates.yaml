@@ -1,0 +1,23 @@
+# edit_pipeline/configs/templates.yaml
+# Defines visual parameters for ffmpeg processing
+
+templates:
+  standard_hd:
+    resolution: "1920x1080"
+    aspect_ratio: "16:9"
+    fps: 30
+    vcodec: "libx264"
+    acodec: "aac"
+    crf: 23
+    bitrate_audio: "192k"
+
+  mobile_vertical:
+    resolution: "1080x1920"
+    aspect_ratio: "9:16"
+    fps: 30
+    vcodec: "libx264"
+    acodec: "aac"
+    crf: 23
+    bitrate_audio: "192k"
+    # Use crop/pad logic to fix aspect ratio
+    padding_color: "black"

@@ -1,0 +1,166 @@
+{
+    "upload_order": [
+        {
+            "video_id": "6iL2GTCl5Rg",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 1
+        },
+        {
+            "video_id": "ilqFujuHM3A",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 2
+        },
+        {
+            "video_id": "bumNXv4pOro",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 3
+        },
+        {
+            "video_id": "IuB9BbdRJpI",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 4
+        },
+        {
+            "video_id": "rvreWnPD2SM",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 5
+        },
+        {
+            "video_id": "OB6dX-JPwcs",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 6
+        },
+        {
+            "video_id": "t2GNyN6L6Z4",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 7
+        },
+        {
+            "video_id": "pFjXcVx56DE",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 8
+        },
+        {
+            "video_id": "kNmn5rAWO",
+            "variant": "hook_short",
+            "score": 79.5,
+            "priority_rank": 9
+        },
+        {
+            "video_id": "ilqFujuHM3A",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 10
+        },
+        {
+            "video_id": "6iL2GTCl5Rg",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 11
+        },
+        {
+            "video_id": "t2GNyN6L6Z4",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 12
+        },
+        {
+            "video_id": "rvreWnPD2SM",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 13
+        },
+        {
+            "video_id": "pFjXcVx56DE",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 14
+        },
+        {
+            "video_id": "IuB9BbdRJpI",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 15
+        },
+        {
+            "video_id": "bumNXv4pOro",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 16
+        },
+        {
+            "video_id": "OB6dX-JPwcs",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 17
+        },
+        {
+            "video_id": "kNmn5rAWO",
+            "variant": "mid_cut",
+            "score": 72.0,
+            "priority_rank": 18
+        },
+        {
+            "video_id": "6iL2GTCl5Rg",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 19
+        },
+        {
+            "video_id": "IuB9BbdRJpI",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 20
+        },
+        {
+            "video_id": "ilqFujuHM3A",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 21
+        },
+        {
+            "video_id": "bumNXv4pOro",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 22
+        },
+        {
+            "video_id": "kNmn5rAWO",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 23
+        },
+        {
+            "video_id": "pFjXcVx56DE",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 24
+        },
+        {
+            "video_id": "OB6dX-JPwcs",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 25
+        },
+        {
+            "video_id": "rvreWnPD2SM",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 26
+        },
+        {
+            "video_id": "t2GNyN6L6Z4",
+            "variant": "full_optimized",
+            "score": 64.5,
+            "priority_rank": 27
+        }
+    ]
+}

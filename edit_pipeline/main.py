@@ -1,6 +1,6 @@
 """
 YouTube Viral Automation - Edit Pipeline
-Phase 7: Video Processing & Normalization
+Phases 7, 8, 9 & 10 (Metadata & Scoring)
 """
 
 import logging
@@ -14,6 +14,9 @@ sys.path.append(str(project_root))
 from mining_pipeline.core.config import ConfigLoader
 from shared.storage.storage_manager import StorageManager
 from video_processor import VideoProcessor
+from video_optimizer import VideoOptimizer
+from metadata_enricher import MetadataEnricher
+from scoring.video_scorer import VideoScorer
 
 
 def setup_logging():
@@ -41,10 +44,11 @@ def main():
     
     logger.info("="*60)
     logger.info("YouTube Viral Automation - EDIT PIPELINE")
-    logger.info("Phase 7: Video Processing & Normalization")
+    logger.info("Starting Phases 7-9 (Normalization -> Optimization -> Scoring)")
     logger.info("="*60)
     
-    # 1. Load Configuration (from mining_pipeline folder for consistency)
+    # ... (Config loading and storage init same as before)
+    # 1. Load Configuration
     config_path = project_root / "mining_pipeline" / "config.yaml"
     try:
         loader = ConfigLoader(config_path)
@@ -55,7 +59,6 @@ def main():
         sys.exit(1)
 
     # 2. Instantiate Storage Manager
-    # Resolve relative storage root to project root
     storage_root = Path(config.storage_root)
     if not storage_root.is_absolute():
         storage_root = (project_root / storage_root).resolve()
@@ -72,17 +75,45 @@ def main():
         logger.error("✗ ffmpeg NOT FOUND. Please install ffmpeg and add it to your PATH.")
         sys.exit(1)
 
-    # 4. Execute Video Processor
-    processor = VideoProcessor(config, storage)
-    processed_count = processor.process_all()
-
-    # 5. Summary
+    # 4. Phase 7: Video Normalization
     logger.info("="*60)
-    logger.info(f"✅ Phase 7 complete — {processed_count} videos normalized and processed")
-    logger.info(f"Assets stored in: {storage_root}/videos/")
+    logger.info("PHASE 7: Video Processing & Normalization")
+    logger.info("="*60)
+    processor = VideoProcessor(config, storage)
+    norm_processed_count = processor.process_all()
+    logger.info(f"Phase 7 complete: {norm_processed_count} videos normalized.")
+
+    # 5. Phase 8: AI Video Optimization (Shorts Agent)
+    logger.info("="*60)
+    logger.info("PHASE 8: AI Video Optimization Agent")
+    logger.info("="*60)
+    optimizer = VideoOptimizer(config, storage)
+    video_count = optimizer.optimize_all()
+    
+    # 6. Metadata Enrichment
+    logger.info("="*60)
+    logger.info("METADATA: Enrichment & Marketing Prep")
+    logger.info("="*60)
+    enricher = MetadataEnricher(storage)
+    bundle_count = enricher.enrich_all()
+    
+    # 7. Phase 9: AI Scoring & Decision Agent
+    logger.info("="*60)
+    logger.info("PHASE 9: AI Scoring & Decision Agent")
+    logger.info("="*60)
+    scorer = VideoScorer(storage)
+    scored_count = scorer.score_all_variants()
+
+    # 8. Final Summary
+    logger.info("="*60)
+    logger.info(f"✅ Edit Pipeline execution complete")
+    logger.info(f"  - Normalized: {norm_processed_count} videos")
+    logger.info(f"  - Optimized for Shorts: {video_count} videos")
+    logger.info(f"  - Scored & Ranked: {scored_count} variants")
+    logger.info(f"Scoring Data:  data/scoring/video_scores.csv")
     logger.info("="*60)
     
-    print(f"\n✅ Phase 7 complete — {processed_count} videos processed.")
+    print(f"\n✅ Edit Pipeline complete — {scored_count} variants ready for the Upload Pipeline.")
 
 
 if __name__ == "__main__":

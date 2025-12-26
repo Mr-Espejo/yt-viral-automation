@@ -1,0 +1,84 @@
+"""
+YouTube Viral Automation - Upload Pipeline
+Phase 10: Upload, Scheduling & Experimentation
+"""
+
+import logging
+import sys
+from pathlib import Path
+
+# Add project root to sys.path
+project_root = Path(__file__).parent.parent
+sys.path.append(str(project_root))
+
+from mining_pipeline.core.config import ConfigLoader
+from shared.storage.storage_manager import StorageManager
+from upload_pipeline.core.upload_manager import UploadManager
+
+
+def setup_logging():
+    """Configure logging for the Upload Pipeline."""
+    logs_dir = project_root / "storage" / "logs"
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Ensure performance dir exists
+    (project_root / "data" / "performance").mkdir(parents=True, exist_ok=True)
+    
+    log_file = logs_dir / "upload_pipeline.log"
+    
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=[
+            logging.FileHandler(log_file, mode='a', encoding='utf-8'),
+            logging.StreamHandler()
+        ]
+    )
+    return logging.getLogger(__name__)
+
+
+def main():
+    """Main execution entry for the Upload Pipeline."""
+    logger = setup_logging()
+    
+    logger.info("="*60)
+    logger.info("YouTube Viral Automation - UPLOAD PIPELINE")
+    logger.info("Phase 10: Publication & Experimentation")
+    logger.info("="*60)
+    
+    # 1. Load Configuration
+    config_path = project_root / "mining_pipeline" / "config.yaml"
+    try:
+        loader = ConfigLoader(config_path)
+        config = loader.load()
+        logger.info(f"Configuration loaded from {config_path}")
+    except Exception as e:
+        logger.error(f"Failed to load configuration: {e}")
+        sys.exit(1)
+
+    # 2. Instantiate Storage Manager
+    storage_root = Path(config.storage_root)
+    if not storage_root.is_absolute():
+        storage_root = (project_root / storage_root).resolve()
+        
+    storage = StorageManager(str(storage_root), config.keep_local_copy)
+    logger.info(f"Storage Manager initialized at {storage_root}")
+
+    # 3. Execute Upload Manager
+    # Config for scheduler is now in upload_pipeline/config/
+    uploader = UploadManager(storage, project_root / "upload_pipeline" / "config")
+    published_count = uploader.execute_upload_pipeline(max_uploads=5)
+
+    # 4. Summary
+    logger.info("="*60)
+    logger.info(f"✅ Upload Pipeline execution complete")
+    logger.info(f"  - Successfully Published: {published_count} variants")
+    logger.info(f"Performance Log: data/performance/uploads_log.csv")
+    logger.info("="*60)
+    
+    print(f"\n✅ Upload Pipeline complete — {published_count} videos processed.")
+
+
+if __name__ == "__main__":
+    main()

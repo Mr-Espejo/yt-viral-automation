@@ -1,0 +1,18 @@
+# edit_pipeline/configs/variants.yaml
+# Defines the specific variants to be generated for each video
+
+variants:
+  - name: "vertical_teaser"
+    template: "mobile_vertical"
+    rule: "clip_intro_only"
+    max_duration: 15
+
+  - name: "horizontal_full"
+    template: "standard_hd"
+    rule: "full_assembly"
+    max_duration: 600
+
+  - name: "vertical_best_part"
+    template: "mobile_vertical"
+    rule: "body_only"
+    max_duration: 59
