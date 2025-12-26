@@ -40,11 +40,18 @@ def setup_logging():
 
 def main():
     """Main execution entry for the Upload Pipeline."""
+    import argparse
+    parser = argparse.ArgumentParser(description="YouTube Viral Automation - Upload Pipeline")
+    parser.add_argument("--mode", type=str, choices=["auto", "composed", "priority"], default="auto", 
+                        help="Upload mode: 'composed' for new edits, 'priority' for optimized originals, 'auto' for best guess.")
+    parser.add_argument("--limit", type=int, default=9, help="Max uploads for this session.")
+    args = parser.parse_args()
+
     logger = setup_logging()
     
     logger.info("="*60)
     logger.info("YouTube Viral Automation - UPLOAD PIPELINE")
-    logger.info("Phase 10: Publication & Experimentation")
+    logger.info(f"Mode: {args.mode.upper()} | Limit: {args.limit}")
     logger.info("="*60)
     
     # 1. Load Configuration
@@ -52,7 +59,6 @@ def main():
     try:
         loader = ConfigLoader(config_path)
         config = loader.load()
-        logger.info(f"Configuration loaded from {config_path}")
     except Exception as e:
         logger.error(f"Failed to load configuration: {e}")
         sys.exit(1)
@@ -63,18 +69,15 @@ def main():
         storage_root = (project_root / storage_root).resolve()
         
     storage = StorageManager(str(storage_root), config.keep_local_copy)
-    logger.info(f"Storage Manager initialized at {storage_root}")
 
     # 3. Execute Upload Manager
-    # Config for scheduler is now in upload_pipeline/config/
     uploader = UploadManager(storage, project_root / "upload_pipeline" / "config")
-    published_count = uploader.execute_upload_pipeline(max_uploads=5)
+    published_count = uploader.execute_upload_pipeline(max_uploads=args.limit, mode=args.mode)
 
     # 4. Summary
     logger.info("="*60)
     logger.info(f"✅ Upload Pipeline execution complete")
-    logger.info(f"  - Successfully Published: {published_count} variants")
-    logger.info(f"Performance Log: data/performance/uploads_log.csv")
+    logger.info(f"  - Successfully Published: {published_count} videos")
     logger.info("="*60)
     
     print(f"\n✅ Upload Pipeline complete — {published_count} videos processed.")

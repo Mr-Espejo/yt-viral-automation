@@ -3,9 +3,11 @@
 
 schedule:
   timezone: "America/Bogota"
-  upload_limit_per_day: 5
+  upload_limit_per_day: 9
   delay_between_uploads_minutes: 60
   windows:
+    - start: "00:00"
+      end: "03:00"
     - start: "12:00"
       end: "14:00"
     - start: "18:00"
