@@ -18,6 +18,7 @@ storage/logs/
 *.env
 config.yaml
 client_secrets.json
+token.json
 
 # Sistema
 .DS_Store
